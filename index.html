@@ -274,6 +274,9 @@
       if (!currentUser || busy) return;
 
       busy = true;
+      const button = document.getElementById("stampButton");
+      if (button) button.disabled = true;
+
       try {
         const { data, error } = await db
           .from("work_sessions")
@@ -286,12 +289,12 @@
         workSessions = data || [];
         currentSession = workSessions.find(s => s.end_time === null) || null;
         lastSync = new Date();
-        updateUI();
       } catch (error) {
         console.error(error);
         document.getElementById("syncNote").textContent = "Synchronisierung fehlgeschlagen: " + error.message;
       } finally {
         busy = false;
+        updateUI();
       }
     }
 
